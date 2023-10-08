@@ -3,11 +3,13 @@
 
 int Conta::contasCriadas = 0;
 
+
+
 Conta::Conta(std::string numeroAcesso, Titular titular):
 	numeroAcesso(numeroAcesso), 
-	saldo(0), 
-	limite (1200), 
-	titular(titular) 
+	titular(titular),
+	saldo(0.0),
+	limite(1200.0)
 {
 	contasCriadas++;
 
@@ -19,31 +21,28 @@ Conta::~Conta() {
 }
 
 void Conta::sacar(const float& valorSaque) {
-	if (valorSaque < 0) {
+	float taxaSaque = valorSaque * valorTaxa();
+	float totalSaque = valorSaque + taxaSaque;
+
+	if (totalSaque < 0) {
 		std::cout << "Valor inválido." << std::endl;
 
 		return;
 	}
 
-	if (valorSaque > saldo + limite) {
+	if (totalSaque > saldo + limite) {
 		std::cout << "Saldo e limite insuficientes" << std::endl;
 
 		return;
 	}
 
-	saldo -= valorSaque;
+	saldo -= totalSaque;
 
 }
 
 void Conta::depositar(const float& valorDeposito) {
 	saldo += valorDeposito;
 
-}
-
-void Conta::transferir(Conta& contaDeposito, const float& valorTransferencia) {
-	this->sacar(valorTransferencia);
-
-	contaDeposito.depositar(valorTransferencia);
 }
 
 void Conta::extrato() {
@@ -56,14 +55,14 @@ std::string Conta::pegaNumeroAcesso() {
 
 }
 
-int Conta::pegaContasCriadas() {
-	return contasCriadas;
-}
-
 void Conta::verificacaoNumeroAcesso() {
 	if (numeroAcesso.size() != 3) {
 		std::cout << "Numero de acesso inválido" << std::endl;
 
 		exit(0);
 	}
+}
+
+int Conta::pegaContasCriadas() {
+	return contasCriadas;
 }

@@ -3,26 +3,26 @@
 #include "titular.hpp"
 
 class Conta {
-private:
-	static int contasCriadas;
-
-public:
-	static int pegaContasCriadas();
+protected:
+	float saldo;
+	float limite;
 
 private:
 	std::string numeroAcesso;
-	float saldo;
-	float limite;
 	Titular titular;
+	static int contasCriadas;
 
 public:
 	Conta(std::string numeroAcesso, Titular titular);
-	~Conta();
-	std::string pegaNumeroAcesso();
+	virtual ~Conta();
+	virtual float valorTaxa() const = 0;
 	void sacar(const float& valorSaque);
 	void depositar(const float& valorDeposito);
-	void transferir(Conta& contaDeposito, const float& valorTransferencia);
 	void extrato();
+	std::string pegaNumeroAcesso();
+	static int pegaContasCriadas();
+
+private:
 	void verificacaoNumeroAcesso();
 
 };

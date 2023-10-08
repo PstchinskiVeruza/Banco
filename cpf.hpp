@@ -8,5 +8,8 @@ private:
 public:
 	Cpf(std::string numero);
 	std::string pegaNumero();
+
+private:
 	void verificacaoNumero();
+
 };

@@ -1,9 +1,9 @@
 #include <iostream>
+#include <utility>
+#include <variant>
 #include "conta.hpp"
 
 int Conta::contasCriadas = 0;
-
-
 
 Conta::Conta(std::string numeroAcesso, Titular titular):
 	numeroAcesso(numeroAcesso), 
@@ -14,39 +14,54 @@ Conta::Conta(std::string numeroAcesso, Titular titular):
 	contasCriadas++;
 
 	verificacaoNumeroAcesso();
+
 }
 
 Conta::~Conta() {
 	contasCriadas--;
+
 }
 
-void Conta::sacar(const float& valorSaque) {
+std::variant<Conta::resultadoSaque, float> Conta::sacar(const float& valorSaque) {
 	float taxaSaque = valorSaque * valorTaxa();
 	float totalSaque = valorSaque + taxaSaque;
 
 	if (totalSaque < 0) {
-		std::cout << "Valor inválido." << std::endl;
+		std::cout << "Saque negativo, valor inválido." << std::endl;
 
-		return;
+		return Negativo;
 	}
 
 	if (totalSaque > saldo + limite) {
-		std::cout << "Saldo e limite insuficientes" << std::endl;
+		std::cout << "Saque excede saldo e limite, valor inválido" << std::endl;
 
-		return;
+		return Insuficiente;
 	}
 
 	saldo -= totalSaque;
 
+	return saldo;
+
 }
 
 void Conta::depositar(const float& valorDeposito) {
+	if (valorDeposito < 0) {
+		std::cout << "Deposito negativo, valor inválido." << std::endl;
+
+		return;
+	}
+
 	saldo += valorDeposito;
 
 }
 
-void Conta::extrato() {
-	std::cout << "Saldo: " << saldo << " com um limite de " << limite << std::endl;
+void Conta::operator+=(const float& valorDeposito) {
+	depositar(valorDeposito);
+
+}
+
+float Conta::extrato() {
+	return saldo;
 
 }
 
@@ -65,4 +80,10 @@ void Conta::verificacaoNumeroAcesso() {
 
 int Conta::pegaContasCriadas() {
 	return contasCriadas;
+
+}
+
+bool Conta::operator<(Conta& contaComparacao) {
+	return this->extrato() < contaComparacao.extrato();
+
 }

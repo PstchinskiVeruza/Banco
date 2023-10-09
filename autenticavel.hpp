@@ -8,4 +8,5 @@ private:
 public:
 	Autenticavel(std::string senha);
 	bool autenticacao(std::string senha);
+
 };

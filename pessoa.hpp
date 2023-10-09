@@ -9,7 +9,9 @@ protected:
 
 public:
 	Pessoa(std::string nome, Cpf cpf);
+	std::string pegaNome();
 
 private:
 	void verificacaoNome();
+
 };

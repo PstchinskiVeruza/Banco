@@ -1,12 +1,15 @@
-#pragma once
 #include <string>
+#include "autenticavel.hpp"
 
-class Autenticavel {
-private:
-	std::string senha;
+Autenticavel::Autenticavel(std::string senha) : 
+	senha(senha)
+{}
 
-public:
-	Autenticavel(std::string senha);
-	bool autenticacao(std::string senha);
+bool Autenticavel::autenticacao(std::string senha) {
+	if (senha == this->senha) {
+		return true;
+	}
 
-};
+	return false;
+
+}

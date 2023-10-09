@@ -6,10 +6,12 @@ Cpf::Cpf(std::string numero):
 	numero(numero)
 {
 	verificacaoNumero();
+
 }
 
 std::string Cpf::pegaNumero() {
 	return numero;
+
 }
 
 void Cpf::verificacaoNumero() {

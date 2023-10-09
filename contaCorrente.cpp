@@ -1,4 +1,5 @@
 #include <iostream>
+#include <utility>
 #include "contaCorrente.hpp"
 #include "conta.hpp"
 
@@ -8,6 +9,7 @@ ContaCorrente::ContaCorrente(std::string numeroAcesso, Titular titular) :
 
 float ContaCorrente::valorTaxa() const {
 	return 0.05;
+
 }
 
 void ContaCorrente::transferir(Conta& contaDeposito, const float& valorTransferencia) {
@@ -15,7 +17,16 @@ void ContaCorrente::transferir(Conta& contaDeposito, const float& valorTransfere
 		std::cout << "Transferência inválida" << std::endl;
 	}
 
-	this->sacar(valorTransferencia);
+	auto validacaoNovoSaldo = this->sacar(valorTransferencia);
 
-	contaDeposito.depositar(valorTransferencia);
+	if (auto saldo = std::get_if<float>(&validacaoNovoSaldo)) {
+		contaDeposito.depositar(valorTransferencia);
+		std::cout << "Novo saldo " << (*saldo) << std::endl;
+
+	}
+}
+
+void ContaCorrente::operator+=(ContaCorrente& contaOrigem) {
+	contaOrigem.transferir(*this, contaOrigem.extrato() / 2);
+
 }

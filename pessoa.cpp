@@ -7,6 +7,12 @@ Pessoa::Pessoa(std::string nome, Cpf cpf) :
 	cpf(cpf)
 {
 	verificacaoNome();
+
+}
+
+std::string Pessoa::pegaNome() {
+	return nome;
+
 }
 
 void Pessoa::verificacaoNome() {
